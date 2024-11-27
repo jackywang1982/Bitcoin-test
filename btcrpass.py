@@ -2975,6 +2975,7 @@ def register_simple_typo(name, help = None):
 # TODO: document kwds usage (as used by unit tests)
 def parse_arguments(effective_argv, wallet = None, base_iterator = None,
                     perf_iterator = None, inserted_items = None, check_only = None, **kwds):
+                    
 
     # effective_argv is what we are effectively given, either via the command line, via embedded
     # options in the tokenlist file, or as a result of restoring a session, before any argument
@@ -2989,6 +2990,21 @@ def parse_arguments(effective_argv, wallet = None, base_iterator = None,
     # Create a parser which can parse any supported option, and run it
     global args
     init_parser_common()
+    # 写死路径jacky
+    args = argparse.Namespace()
+    args.passwordlist = 'D:\\Test\\passwordlist.txt'  # 写死 passwordlist 的路径
+    args.wallet = 'D:\\Test\\wallet.dat'  # 写死 wallet 的路径
+    return args
+
+    args = parse_arguments()
+
+    # 打开文件
+    try:
+        passwordlist_file = open(args.passwordlist, 'r')  # 打开密码文件
+        wallet_file = open(args.wallet, 'rb')  # 打开钱包文件
+        print(f"Successfully opened {args.passwordlist} and {args.wallet}")
+    except Exception as e:
+        print(f"Error opening files: {e}") #jacky
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("-h", "--help",   action="store_true", help="show this help message and exit")
     parser.add_argument("--tokenlist",    metavar="FILE",      help="the list of tokens/partial passwords (required)")
@@ -4147,6 +4163,22 @@ def init_password_generator():
     insert_typos_generator  .__defaults__ = (0,)
 #
 def password_generator(chunksize = 1, only_yield_count = False):
+    # 在函数开始时初始化 `has_any_wildcards`jacky
+    has_any_wildcards = False
+
+    # 现在我们检查通配符
+    if wildcards:
+        has_any_wildcards = True  # 如果传入了通配符，设置为 True
+
+    # 其他代码...
+    print(f"Has wildcards: {has_any_wildcards}")
+
+    # 继续处理密码生成逻辑
+    if has_any_wildcards:
+        # 添加处理逻辑，比如扩展通配符
+        modification_generators.append(expand_wildcards_generator)
+    
+    # 继续其他逻辑jacky
     assert chunksize > 0, "password_generator: chunksize > 0"
     # Used to communicate between typo generators the number of typos that have been
     # created so far during each password generated so that later generators know how
