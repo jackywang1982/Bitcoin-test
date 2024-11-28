@@ -2988,6 +2988,7 @@ def parse_arguments(effective_argv, wallet = None, base_iterator = None,
     if not effective_argv: enable_pause()
 
     # Create a parser which can parse any supported option, and run it
+    global passwordlist_file, initial_passwordlist,passwordlist_allcached
     global args
     init_parser_common()
     # 写死路径jacky
@@ -3000,8 +3001,8 @@ def parse_arguments(effective_argv, wallet = None, base_iterator = None,
 
     # 打开文件
     try:
-        passwordlist_file = open(args.passwordlist, 'r')  # 打开密码文件
-        wallet_file = open(args.wallet, 'rb')  # 打开钱包文件
+        passwordlist_file = open('D:/Test/passwordlist.txt', 'r')  # 打开密码文件
+        wallet_file = open('D:/Test/wallet.dat', 'rb')  # 打开钱包文件
         print(f"Successfully opened {args.passwordlist} and {args.wallet}")
     except Exception as e:
         print(f"Error opening files: {e}") #jacky
